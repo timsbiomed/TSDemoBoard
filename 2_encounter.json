@@ -1,0 +1,10 @@
+{
+	"resourceType" : "Encounter",
+	"id" : "example_encounter",
+	"identifier" : [  "encounter_1" ],
+	"subject":  { 
+		"reference": "Patient/example"
+	},
+	"type": [ "J21.8" ]
+}
+
