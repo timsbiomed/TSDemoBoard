@@ -283,16 +283,25 @@ class ResourceValidation:
         response = self.tims_client.do_hapi_get_request("/Encounter/", 
                        {'patient' : name})
         self.decode_encounter_json(response)  
+
+    def search_encounter(self):
+        response = self.tims_client.do_hapi_get_request("/Encounter/", {})
+        self.decode_encounter_json(response)  
             
     def decode_encounter_json(self, response_dict):
             if ('entry' in response_dict):
-                print(response_dict['entry'][0]['fullUrl'])   
-                print("id: " + response_dict['entry'][0]['resource']['id'])
-                print("text status: " + response_dict['entry'][0]['resource']['text']['status'])
-                print("text div: " + response_dict['entry'][0]['resource']['text']['div'])            
-                print("status: " + response_dict['entry'][0]['resource']['status'])
+                for entry in response_dict['entry']:
+                    print("fullUrl:" + entry['fullUrl'])   
+                    print("id: " + entry['resource']['id'])
+                    print("text status: " + entry['resource']['text']['status'])
+                    print("text div: " + entry['resource']['text']['div'])            
+                    print("status: " + entry['resource']['status'])
+                    print("patient ref: " + entry['resource']['subject']['reference'])
+                    print("")
             else:
-                print("Not Present")
+                print("entry Not Present")
+                print(response_dict)
+                print("")
             print("")        
 
         
