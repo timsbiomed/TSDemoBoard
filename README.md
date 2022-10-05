@@ -11,3 +11,7 @@ Jupyter notebooks for showing the evolving set of services configured and implem
 2. Run: `jupyter notebook`
 3. A new tab will open up in your web browser, allowing you to select local notebooks. Select **CodeSystem.ipynb** to open the notebook.
 4. You can run cells one at a time by clicking the "Run" button from the toolbar. Alternatively, you can run them all by opening the "Cell" menu and selecting "Run all".
+
+
+You can view the state of each notebook from github and see the output:
+Example: https://github.com/HOT-Ecosystem/TSDemoBoard/blob/chris-validation/ResourceValidation.ipynb 
