@@ -157,8 +157,19 @@ class TimsClient:
             TimsClient.decode_code_system_json(response)
 
     def validate_code(self, system_id: str, code: str):
-        """Validate that code is in code system"""
+        """Validate that code is in code system, putting the system id in the URL path"""
         response: Dict = self.do_hapi_get_request(f'CodeSystem/{system_id}/$validate-code?code={code}')
+        if response:        
+            valid = [x['valueBoolean'] for x in response['parameter'] if x['name'] == 'result'][0]
+            if valid:
+                label = [x['valueString'] for x in response['parameter'] if x['name'] == 'display'][0]
+                print(label)
+            else:
+                print('Invalid code')
+
+    def validate_code_2(self, system_id: str, code: str):
+        """Validate that code is in code system, putting the system as a parameter"""
+        response: Dict = self.do_hapi_get_request(f'CodeSystem/$validate-code?codeSystem={system_id}&code={code}')
         if response:        
             valid = [x['valueBoolean'] for x in response['parameter'] if x['name'] == 'result'][0]
             if valid:
@@ -178,16 +189,20 @@ class TimsClient:
     def decode_code_system_json(response: Dict):
         """Decode CodeSystem response"""
         if 'entry' in response:
-            print("title: " + response['entry'][0]['resource']['title'])
+            print("name: " + response['entry'][0]['resource']['name'])
+            if 'title' in response['entry'][0]['resource']:
+                print("title: " + response['entry'][0]['resource']['title'])
             print("resourceType: ", response['entry'][0]['resource']['resourceType'], end="  ")
             print("id: " + response['entry'][0]['resource']['id'])
             print("url: " + response['entry'][0]['resource']['url'])
             print("full url: " + response['entry'][0]['fullUrl'])
             id_idx = 1 if len(response['entry']) > 1 else 0
-            id_sys = response['entry'][id_idx]['resource']['identifier'][0]['system']
-            id_sys_val = response['entry'][id_idx]['resource']['identifier'][0]['value']
-            print("identifier system: \"" + id_sys, end="\",  ")
-            print("value: \"" + id_sys_val + "\"")
+            
+            if 'identifier' in  response['entry'][id_idx]['resource']:
+                id_sys = response['entry'][id_idx]['resource']['identifier'][0]['system']
+                id_sys_val = response['entry'][id_idx]['resource']['identifier'][0]['value']
+                print("identifier system: \"" + id_sys, end="\",  ")
+                print("value: \"" + id_sys_val + "\"")
         else:
             print("Not Present")
 
