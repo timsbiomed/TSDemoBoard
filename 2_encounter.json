@@ -1,10 +1,19 @@
 {
 	"resourceType" : "Encounter",
 	"id" : "example_encounter",
+    "text" : {
+        "status":"generated",
+        "div":"<div>Encounter with patient</div>"
+    },
 	"identifier" : [  "encounter_1" ],
+    "status" : "in-progress",
 	"subject":  { 
-		"reference": "Patient/example"
+		"reference": "Patient/18845"
 	},
-	"type": [ "J21.8" ]
+    "class":{
+      "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+      "code": "IMP",
+      "display": "inpatient encounter"
+    }
 }
 
