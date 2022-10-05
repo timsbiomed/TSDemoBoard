@@ -15,3 +15,5 @@ Jupyter notebooks for showing the evolving set of services configured and implem
 
 You can view the state of each notebook from github and see the output:
 Example: https://github.com/HOT-Ecosystem/TSDemoBoard/blob/chris-validation/ResourceValidation.ipynb 
+
+
