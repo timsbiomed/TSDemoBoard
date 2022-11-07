@@ -8,20 +8,12 @@
 	"identifier" : [  "encounter_1" ],
     "status" : "in-progress",
 	"subject":  { 
-		"reference": "Patient/18845"
+		"reference": "Patient/99945"
 	},
     "class":{
       "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
       "code": "IMP",
       "display": "inpatient encounter"
-    },
-    "participant":[{
-        "individual": {
-            "reference" : "Practitioner/f201"
-        }
-    }],
-    "serviceProvider":{
-		"reference": "Organization/18829"
     }
 }
 
