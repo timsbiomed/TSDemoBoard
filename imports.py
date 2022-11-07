@@ -138,9 +138,16 @@ class TimsClient:
     def summarize_code_systems(self, verbose=False):
         """Summarize code systems"""
         response = self.do_hapi_get_request("CodeSystem?_summary=true", {})
-        if response:        
-            sys_names = [x['resource']['name'] for x in response['entry']]
-            print(', '.join(sys_names))
+        if response and 'entry' in response and len(response['entry']) > 0:        
+            for x in response['entry']:
+                if 'title' in x['resource']:
+                    print(f"title: {x['resource']['title']}")
+                else:
+                    print(f"title: (none)")
+                print(f"name:{x['resource']['name']} , id:{x['resource']['id']}, url:{x['resource']['url']}")
+                print("")
+        else:
+            print("none loaded")
             
             
             
