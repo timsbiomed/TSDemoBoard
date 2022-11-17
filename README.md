@@ -17,3 +17,5 @@ You can view the state of each notebook from github and see the output:
 Example: https://github.com/HOT-Ecosystem/TSDemoBoard/blob/chris-validation/ResourceValidation.ipynb 
 
 
+## Pages are here: https://hot-ecosystem.github.io/TSDemoBoard/ 
+
