@@ -3,9 +3,24 @@
     <head> <title>TSDemoboard</title>
     </head>
     <body>
+        <h1>Terminology Services Demo Boards</h1>
           This is a github pages site for the TSDemoBoard and related scripts.
         <script src="fhir.js"></script>      
-        <button type="submit" onClick="getFhir()">Search</button>
+
+    <hr>
+    <h2>Query FHIR</h2>
+        <label for="system">Sytem:</label>
+        <select name="system" id="system">
+            <option value="http://loinc.org">LOINC</option>
+            <option value="http://snomed.info/sct">SNOMED</option>
+            <option value="http://hl7.org/fhir/sid/icd-10-cm">ICD-10 CM</option>
+            <option value="http://purl.obolibrary.org/obo/hp.fhir">HP</option>
+            <option value="http://purl.obolibrary.org/obo/mondo.owl">MONDO</option>
+            <option value="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">CPT4</option>
+        </select> 
+        <label for="code">Code:</label>
+        <input type="text" id="code" name="code">
+        <button type="submit" onClick="getFhir(document.getElementById('system').value, document.getElementById('code').value)">Search</button>
     </body>
 </html>
 
