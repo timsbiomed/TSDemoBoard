@@ -5,116 +5,13 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
         <!-- JavaScript Bundle with Popper -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-
-
     </head>
     <body>
         <h1>Terminology Services Demo Boards</h1>
           This is a github pages site for the TSDemoBoard and related scripts.
-        <script src="fhir.js"></script>      
+        <br>
 
-    <hr>
-    <table>
-        <tr>
-            <td colspan=3><em>Choose a server:</em> </td>
-            <td><label for="server">Server:</label></td>
-            <td>
-                <select name="server" id="server">
-                    <option value="http://20.119.216.32:8000/r4">JHU main</option>
-                    <option value="http://20.119.216.32:8001/r4">JHU test</option>
-                    <option value="http://127.0.0.1:8080/fhir">local 8080</option>
-                    <option value="http://hl7.org/fhir/sid/icd-10-cm">Tx.Fhir.org</option>
-                    <option value="http://purl.obolibrary.org/obo/hp.fhir">hapi.fhir.org</option>
-                    <option value="http://purl.obolibrary.org/obo/mondo.owl">loinc.fhir.org</option>
-                    <option value="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">RxNorm server</option>
-                </select> 
-            </td>
-        </tr>
-    </table>
-
-    <h2>Query Loaded CodeSystems</h2> 
-            <button type="submit" onClick="query_loaded_codesystems(document.getElementById('server').value)">Show Loaded CodeSystems</button>
-            <output type="text" id="output-codesystem" name="output-codesystem">
-        &nbsp
-
-    <h2>Query FHIR Concepts</h2> 
-
-    <table>
-
-        <tr>
-            <td colspan=3><em>Choose a CodeSystem, ontology or vocabulary:</em> </td>
-            <td><label for="system">Sytem:</label></td>
-            <td><select name="system" id="system">
-            <option value="http://loinc.org">LOINC</option>
-            <option value="http://snomed.info/sct">SNOMED</option>
-            <option value="http://hl7.org/fhir/sid/icd-10-cm">ICD-10 CM</option>
-            <option value="http://purl.obolibrary.org/obo/hp.fhir">HP</option>
-            <option value="http://purl.obolibrary.org/obo/mondo.owl">MONDO</option>
-            <option value="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">CPT4</option>
-            </select> </td>
-        </tr>
-        <tr>
-            <td> &nbsp &nbsp &nbsp &nbsp </td>
-            <td colspan=2><em>Either specify a code to lookup:</em> </td>
-            <td><label for="code">Code:</label> </td>
-            <td><input type="text" id="code" name="code"></td>
-            <td><button type="submit" onClick="getFhir( document.getElementById('server').value, document.getElementById('system').value, document.getElementById('code').value)" >Search for Code</button></td>
-        </tr>
-        <tr>
-            <td> &nbsp &nbsp &nbsp &nbsp </td>
-            <td colspan=2><em>Or specify some text  to lookup:</em> </td>
-            <td><label for="text">Text:</label></td>
-            <td><input type="text" id="text" name="text"> </td>
-            <td><button type="submit" onClick="not_implemented('text search')">Search for Text</button></td>
-        </tr>
-        <tr><td></td><td colspan=5>LOINC 66678-4, LOINC LA6668-3, MONDO_0000001, CHEBI_10545, CHEBI_36338</td></tr>
-    </table>
-&nbsp
-    <table>
-        <tr><td colspan=5><em>Results:</em></td></tr>
-        <tr>
-            <td>&nbsp &nbsp &nbsp &nbsp</td>
-            <td>System:</td><td><output type="text" id="output-system" name="output-system"></td>
-            <td>Code:</td><td><output type="text" id="output-code" name="output-code"> </td>
-        </tr>
-        <tr>
-            <td>&nbsp &nbsp &nbsp &nbsp</td>
-           <td>Label:</td><td><output type="text" id="output-label" name="output-label"></td> 
-        </tr>
-        <tr>
-            <td>&nbsp &nbsp &nbsp &nbsp</td>
-           <td>Definition:</td><td><output type="text" id="output-definition" name="output-definition"> </td>
-        </tr>
-    </table>
-<hr>
-        Bootstrap style drop-downs: I havent' gotten them wired into the action. Don't know how to get them on the same line.<br>
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            System 
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="http://loinc.org">LOINC</a></li>
-            <li><a class="dropdown-item" href="http://snomed.info/sct">SNOMED</a></li>
-            <li><a class="dropdown-item" href="http://hl7.org/fhir/sid/icd-10-cm">ICD-10 CM</a></li>
-            <li><a class="dropdown-item" href="http://purl.obolibrary.org/obo/hp.fhir">HP</a></li>
-            <li><a class="dropdown-item" href="http://purl.obolibrary.org/obo/mondo.owl">MONDO</a></li>
-            <li><a class="dropdown-item" href="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">CPT4</a></li>
-          </ul>
-        </div>
-        <div class="dropdown">
-          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Server
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="http://loinc.org">JHU main</a></lib>
-            <li><a class="dropdown-item" href="http://snomed.info/sct">JHU test</a></lib>
-            <li><a class="dropdown-item" href="http://hl7.org/fhir/sid/icd-10-cm">Tx.Fhir.org</a></lib>
-            <li><a class="dropdown-item" href="http://purl.obolibrary.org/obo/hp.fhir">hapi.fhir.org</a></lib>
-            <li><a class="dropdown-item" href="http://purl.obolibrary.org/obo/mondo.owl">loinc.fhir.org</a></lib>
-            <li><a class="dropdown-item" href="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">RxNorm server</a></lib>
-          </ul>
-        </div>
-
+        <a href="fhir.html">Query FHIR Servers</a>
 
     </body>
 </html>
