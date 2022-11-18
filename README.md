@@ -18,4 +18,4 @@ Example: https://github.com/HOT-Ecosystem/TSDemoBoard/blob/chris-validation/Reso
 
 
 ## Pages are here: https://hot-ecosystem.github.io/TSDemoBoard/ 
-
+Content and code is in the pages branch.
