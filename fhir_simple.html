@@ -13,7 +13,7 @@
     <h1>Query a FHIR Server for Terminology</h1>
     <table>
         <tr>
-            <td><label for="server">For any operation, choose a Server:</label></td>
+            <td><label for="server"><em>Choose a Server:</em></label></td>
             <td>
                 <select name="server" id="server">
                     <option value="http://20.119.216.32:8000/r4">JHU main</option>
@@ -29,29 +29,29 @@
     </table>
     &nbsp
 
-    <h2>Query FHIR Concepts</h2> 
+    <h2>Query a FHIR server for a concept by code</h2> 
 
     <table>
         <tr>
-            <td colspan=3><em>Choose a CodeSystem, ontology or vocabulary:</em> </td>
-            <td><label for="system">Sytem:</label></td>
+            <td colspan=2><em>Choose a CodeSystem</em> </td>
+            <td><label for="system">&nbspSytem:</label></td>
             <td><select name="system" id="system">
-            <option value="http://loinc.org">LOINC</option>
-            <option value="http://snomed.info/sct">SNOMED</option>
-            <option value="http://hl7.org/fhir/sid/icd-10-cm">ICD-10 CM</option>
-            <option value="http://purl.obolibrary.org/obo/hp.fhir">HP</option>
-            <option value="http://purl.obolibrary.org/obo/mondo.owl">MONDO</option>
-            <option value="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">CPT4</option>
+              <option value="http://loinc.org">LOINC</option>
+              <option value="http://snomed.info/sct">SNOMED</option>
+              <option value="http://hl7.org/fhir/sid/icd-10-cm">ICD-10 CM</option>
+              <option value="http://purl.obolibrary.org/obo/hp.fhir">HP</option>
+              <option value="http://purl.obolibrary.org/obo/mondo.owl">MONDO</option>
+              <option value="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">CPT4</option>
             </select> </td>
         </tr>
         <tr>
-            <td> &nbsp &nbsp &nbsp &nbsp </td>
-            <td colspan=2><em>Either specify a code to lookup:</em> </td>
-            <td><label for="code">Code:</label> </td>
+            <td colspan=2><em>Specify a code to lookup</em> </td>
+            <td><label for="code">&nbspCode:</label></td>
             <td><input type="text" id="code" name="code"></td>
+        </tr>
+        <tr>
             <td><button type="submit" onClick="getFhir( document.getElementById('server').value, document.getElementById('system').value, document.getElementById('code').value)" >Search for Code</button></td>
         </tr>
-        <tr><td></td><td colspan=5>LOINC 66678-4, LOINC LA6668-3, MONDO_0000001, CHEBI_10545, CHEBI_36338</td></tr>
     </table>
 &nbsp
     <table>
@@ -69,6 +69,11 @@
             <td>&nbsp &nbsp &nbsp &nbsp</td>
            <td>Definition:</td><td><output type="text" id="output-definition" name="output-definition"> </td>
         </tr>
+        <tr>
+            <td>&nbsp &nbsp &nbsp &nbsp</td>
+        </tr>
+        <tr><td></td><td colspan=5>Sample codes for LOINC: 66678-4, LA6668-3</td></tr>
+        <tr><td></td><td colspan=5>Sample codes for MONDO: MONDO_0000001, CHEBI_10545, CHEBI_36338</td></tr>
     </table>
 </body>
 </html>
