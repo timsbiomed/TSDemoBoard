@@ -29,7 +29,7 @@
     </table>
     &nbsp
 
-    <h2>Query a FHIR server for a concept by code</h2> 
+    <h2>Query for a concept by code</h2> 
 
     <table>
         <tr>
@@ -50,6 +50,7 @@
             <td><input type="text" id="code" name="code"></td>
         </tr>
         <tr>
+            <td colspan=3><em>Click to search</em> </td>
             <td><button type="submit" onClick="getFhir( document.getElementById('server').value, document.getElementById('system').value, document.getElementById('code').value)" >Search for Code</button></td>
         </tr>
     </table>
