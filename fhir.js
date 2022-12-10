@@ -22,26 +22,111 @@ query_loaded_codesystems = async(theServer) => {
 
 const  getFhir = async( theServer, theSystem, theCode) => {
 
-    //const response = await fetch("http://20.119.216.32:8000/r4/CodeSystem/$lookup?system=http://loinc.org&code=LA6668-3", myHeaders)
     //const base_str = "http://20.119.216.32:8000/r4/CodeSystem/$lookup?"  // why the /$?
     const base_str = theServer + "/CodeSystem/$lookup?"  // why the /$?
 
     //const system_str = "system=http://loinc.org"
     //const code_str = "&code=LA6668-3"
-
     const system_str = "system=" + theSystem
     const code_str = "&code=" + theCode
     const requestString = base_str + system_str + code_str
-
-// alert(requestString)
+    // alert(requestString)
 
     const response = await fetch(requestString, myHeaders)
     const myJson = await response.json();
-//  alert(JSON.stringify(myJson))
+    //alert(JSON.stringify(myJson))
 
-    // doesn't work the same for each ontology...
+    // Fetch by number
     label = myJson.parameter[1].valueString
 
+
+    var my_display_string="";
+    for (obj in myJson.parameter) {
+        my_name = myJson.parameter[obj].name
+        if (my_name == 'name') {
+            my_display_string = my_display_string + "Vocab: " + myJson.parameter[obj].valueString + "\n";
+        }
+        if (my_name == 'display') {
+            my_display_string = my_display_string + "Concept name: " + myJson.parameter[obj].valueString + "\n";
+        }
+        property_flag = false;
+        if (my_name == 'property') {
+            //alert(JSON.stringify(myJson.parameter[obj]))
+            // name:code, valueCode:CLASSTYPE, name:value, valueString:2
+            // name:code, valueCode:VersionLastChanged, name:value, valueString:2.65
+            // name:code, valueCode:STATUS, name:value, valueString:TRIAL
+            // name:code, valueCode:VersionFirstReleased, name:value, valueString:2.38
+            // name:code, valueCode:parent
+            // name:code, valueCode:answer-list
+            // name:code, valueCode:COMPONENT
+            // name:code, valueCode:PROPERTY
+            // name:code, valueCode:TIME_ASPCT
+            // name:code, valueCode:SYSTEM
+            // name:code, valueCode:SCALE_TYP
+            // name:code, valueCode:METHOD_TYP
+            // name:code, valueCode:analyte
+            // name:code, valueCode:time-core
+            // name:code, valueCode:super-system
+            // name:code, valueCode:analyte-core
+            // name:code, valueCode:category
+            // {"name":"property",
+            //  "part":[
+            //      {"name":"code","valueCode":"CLASS"},
+            //      {"name":"value","valueCoding":{
+            //                      "system":"http://loinc.org", "code":"LP95321-3", "display":"PHENX"} 
+            //      } 
+            //  ] 
+            // }
+            for (my_part_idx in  myJson.parameter[obj].part) {
+                my_part = myJson.parameter[obj].part[my_part_idx]
+                if (my_part.name == 'value') {
+                    my_display_string = my_display_string 
+                        + "System:" + my_part.valueCoding.system 
+                        + "\nCode: " + my_part.valueCoding.code  
+                        + "\nDisplay:" + my_part.valueCoding .display
+                        + "\n";
+                }
+                if (my_part.name == 'code' && my_part.valueCode != 'CLASS') {
+                    break;
+                }
+                else if (my_part.name == 'code' && my_part.valueCode == 'CLASS') {
+                    //alert("CLASS  " + JSON.stringify(my_part))
+                }
+            }
+            property_flag = false;
+        }
+        if (my_name == 'designation') {
+           my_display_string = my_display_string + "SYNONYM: " 
+           my_part = myJson.parameter[obj].part
+           for (desig_index in my_part) {
+             designation_part = my_part[desig_index];
+             if (designation_part.name == 'name') {
+               my_display_string = my_display_string + " name: " + designation_part.valueString + "\n";
+             }
+             else if (designation_part.name == 'language') {
+                if (designation_part.valueCode != null | designation_part.valueCode == 'undefined') { 
+                    my_display_string = my_display_string + " Language: " + designation_part.valueCode + "\n ";
+                }
+                //else { my_display_string = my_display_string + "--- " }
+             } 
+             else if (designation_part.name == 'value') {
+               my_display_string = my_display_string + " "  + designation_part.valueString + "\n";
+             } 
+             else if (designation_part.name == 'use') {
+               my_display_string = my_display_string +  designation_part.valueCoding.display + ": ";
+             } 
+             else {
+               my_display_string = my_display_string + " XX value: " + JSON.stringify(designation_part) + "\n";
+             } 
+           }
+           my_display_string = my_display_string + "\n"
+          // for (key in Object.keys(myJson.parameter) ) {
+        }
+    }
+    alert(my_display_string)
+
+
+    // Assign into DOM
     document.getElementById('output-system').value = theSystem
     document.getElementById('output-code').value = theCode
     document.getElementById('output-label').value = label
@@ -53,44 +138,3 @@ const  getFhir = async( theServer, theSystem, theCode) => {
     //alert(myJson.parameter['display']['valueString'])
 
 }
-   /*
-
-LOINC for 66678-4
-{"resourceType":"Parameters",
- "parameter":[
-    {"name":"name","valueString":"LOINC"},
-    {"name":"display","valueString":"Diabetes [PhenX]"},
-    {"name":"abstract","valueBoolean":false},
-    {"name":"property","part":[
-        {"name":"code","valueCode":"CLASSTYPE"},
-        {"name":"value","valueString":"2"}] },       
-    {"name":"property","part":[
-        {"name":"code","valueCode":"VersionLastChanged"},
-        {"name":"value","valueString":"2.65"}]},
-    {"name":"property","part":[
-        {"name":"code","valueCode":"STATUS"},
-        {"name":"value","valueString":"TRIAL"}]},
-
-MONDO for  MONDO_000851
-{"resourceType":"OperationOutcome",
-"issue":[
-    {   "severity":"error",
-        "code":"processing",
-        "diagnostics":"HAPI-1738: Unable to find code[MONDO_000851] in system[http://purl.obolibrary.org/obo/mondo.owl]"}]}
-
-MONDO for CHEBI_33424
-{"resourceType":"Parameters",
-    "parameter":[
-        {"name":"name","valueString":"http://purl.obolibrary.org/obo/mondo.owl"},
-        {"name":"version","valueString":"http://purl.obolibrary.org/obo/mondo/releases/2022-07-01/mondo.owl"},
-        {"name":"display","valueString":"sulfur oxoacid derivative"},
-        {"name":"abstract","valueBoolean":false},
-        {"name":"property","part":[
-            {   "name":"code", "valueCode":"parent"},
-            {   "name":"value","valueString":"CHEBI_33241"}]},
-        {"name":"property","part":[
-            {"name":"code","valueCode":"parent"},
-            {"name":"value","valueString":"CHEBI_26835"}]}]}
-
-
-   */ 
