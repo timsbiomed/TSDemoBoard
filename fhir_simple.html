@@ -15,7 +15,7 @@
     </p>
     <table>
         <tr>
-            <td colspan=2><em>Choose a Server </em></td>
+            <td colspan=2><em>Choose a Server.</em></td>
             <td><label for="server">Server:</label></td>
             <td>
                 <select name="server" id="server">
@@ -30,7 +30,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan=2><em>Choose a CodeSystem</em> </td>
+            <td colspan=2><em>Choose a CodeSystem.</em> </td>
             <td><label for="system">Sytem:</label></td>
             <td><select name="system" id="system">
               <option value="http://loinc.org">LOINC</option>
@@ -42,12 +42,12 @@
             </select> </td>
         </tr>
         <tr>
-            <td colspan=2><em>Specify a code to lookup &nbsp; &nbsp; &nbsp; &nbsp;  </em> </td>
+            <td colspan=2><em>Specify a code to lookup. &nbsp; &nbsp; &nbsp; &nbsp;  </em> </td>
             <td><label for="code">Code:</label></td>
             <td><input type="text" id="code" name="code"></td>
         </tr>
         <tr>
-            <td colspan=3><em>Click to search</em> </td>
+            <td colspan=3><em>Click to search.</em> </td>
             <td><button type="submit" onClick="getFhir( document.getElementById('server').value, document.getElementById('system').value, document.getElementById('code').value)" >Search for Code</button></td>
         </tr>
     </table>
@@ -76,15 +76,15 @@
             <td>&nbsp &nbsp &nbsp &nbsp</td>
         </tr>
         <tr><td colspan=5>Sample codes for LOINC: 66678-4, LA6668-3</td></tr>
-        <tr><td colspan=5>Sample codes for MONDO: MONDO_0000001, CHEBI_10545, CHEBI_36338</td></tr>
+<!--        <tr><td colspan=5>Sample codes for MONDO: MONDO_0000001, CHEBI_10545, CHEBI_36338</td></tr> -->
         <tr><td colspan=5>Sample codes for SNOMED: 84114007, 703272007, 703275009</td></tr>
         <tr>
             <td>&nbsp &nbsp &nbsp &nbsp</td>
         </tr>
     </table>
     <p>
-    Many servers linked here use <a href="https://hapifhir.io/">HAPI-FHIR</a>.
-    Licensed under the <a href="https://hapifhir.io/hapi-fhir/license.html">Apache Software License 2.0</a>
+    Many servers linked here use <a href="https://hapifhir.io/">HAPI-FHIR</a>,
+    licensed under the <a href="https://hapifhir.io/hapi-fhir/license.html">Apache Software License 2.0.</a>
     </p>
 </body>
 </html>
