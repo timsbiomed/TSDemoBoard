@@ -115,7 +115,10 @@ const  getFhir = async( theServer, theSystem, theCode) => {
 
     const response = await fetch(requestString, myHeaders)
     if (!response.ok) {
-        alert(response.statusText);
+        alert("ERROR status:" + response.status + 
+           "\n text: \"" + response.statusText + "\"" +
+           "\nCheck the code and selected vocabulary.  Most likely the code \"" + theCode + 
+           "\"  wasn't found in the vocabulary \"" + theSystem + "\".");
     } else {
         const myJson = await response.json();
         label = myJson.parameter[1].valueString
@@ -136,13 +139,16 @@ const  getFhir = async( theServer, theSystem, theCode) => {
             my_display_string += do_designation(myJson)
 
         }
-        alert(my_display_string)
-     
     
         // Assign into DOM
-        document.getElementById('output-system').value = theSystem
-        document.getElementById('output-code').value = theCode
+        document.getElementById('input-system').value = theSystem
+        document.getElementById('input-code').value = theCode
+
+        document.getElementById('output-system').value = theSystem // to-do
+        document.getElementById('output-code').value = theCode // to-do
         document.getElementById('output-label').value = label
+
+        alert(my_display_string)
     }
 
 }
