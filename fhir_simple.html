@@ -10,10 +10,13 @@
     </head>
 
     <body>
-    <h1>Query a FHIR Server for Terminology</h1>
+    <center><h1>Query a FHIR Terminology Server  </h1></center>
+    <p>Enter a system and code, receive names or labels, and a definition if available.
+    </p>
     <table>
         <tr>
-            <td><label for="server"><em>Choose a Server:</em></label></td>
+            <td colspan=2><em>Choose a Server </em></td>
+            <td><label for="server">Server:</label></td>
             <td>
                 <select name="server" id="server">
                     <option value="http://20.119.216.32:8000/r4">JHU main</option>
@@ -26,15 +29,9 @@
                 </select> 
             </td>
         </tr>
-    </table>
-    &nbsp
-
-    <h2>Query for a concept by code</h2> 
-
-    <table>
         <tr>
             <td colspan=2><em>Choose a CodeSystem</em> </td>
-            <td><label for="system">&nbspSytem:</label></td>
+            <td><label for="system">Sytem:</label></td>
             <td><select name="system" id="system">
               <option value="http://loinc.org">LOINC</option>
               <option value="http://snomed.info/sct">SNOMED</option>
@@ -45,8 +42,8 @@
             </select> </td>
         </tr>
         <tr>
-            <td colspan=2><em>Specify a code to lookup</em> </td>
-            <td><label for="code">&nbspCode:</label></td>
+            <td colspan=2><em>Specify a code to lookup &nbsp; &nbsp; &nbsp; &nbsp;  </em> </td>
+            <td><label for="code">Code:</label></td>
             <td><input type="text" id="code" name="code"></td>
         </tr>
         <tr>
@@ -56,6 +53,11 @@
     </table>
 &nbsp
     <table>
+        <tr><td colspan=5><em>Query:</em></td></tr>
+            <td>&nbsp &nbsp &nbsp &nbsp</td>
+            <td>System:</td><td><output type="text" id="input-system" name="output-system"></td>
+            <td>Code:</td><td><output type="text" id="input-code" name="output-code"> </td>
+        </tr>
         <tr><td colspan=5><em>Results:</em></td></tr>
         <tr>
             <td>&nbsp &nbsp &nbsp &nbsp</td>
@@ -73,9 +75,16 @@
         <tr>
             <td>&nbsp &nbsp &nbsp &nbsp</td>
         </tr>
-        <tr><td></td><td colspan=5>Sample codes for LOINC: 66678-4, LA6668-3</td></tr>
-        <tr><td></td><td colspan=5>Sample codes for MONDO: MONDO_0000001, CHEBI_10545, CHEBI_36338</td></tr>
-        <tr><td></td><td colspan=5>Sample codes for SNOMED: 84114007, 703272007, 703275009</td></tr>
+        <tr><td colspan=5>Sample codes for LOINC: 66678-4, LA6668-3</td></tr>
+        <tr><td colspan=5>Sample codes for MONDO: MONDO_0000001, CHEBI_10545, CHEBI_36338</td></tr>
+        <tr><td colspan=5>Sample codes for SNOMED: 84114007, 703272007, 703275009</td></tr>
+        <tr>
+            <td>&nbsp &nbsp &nbsp &nbsp</td>
+        </tr>
     </table>
+    <p>
+    Many servers linked here use <a href="https://hapifhir.io/">HAPI-FHIR</a>.
+    Licensed under the <a href="https://hapifhir.io/hapi-fhir/license.html">Apache Software License 2.0</a>
+    </p>
 </body>
 </html>
