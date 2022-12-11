@@ -113,42 +113,48 @@ const  getFhir = async( theServer, theSystem, theCode) => {
     const code_str = "&code=" + theCode
     const requestString = base_str + system_str + code_str
 
-    const response = await fetch(requestString, myHeaders)
-    if (!response.ok) {
-        alert("ERROR status:" + response.status + 
-           "\n text: \"" + response.statusText + "\"" +
-           "\nCheck the code and selected vocabulary.  Most likely the code \"" + theCode + 
-           "\"  wasn't found in the vocabulary \"" + theSystem + "\".");
-    } else {
-        const myJson = await response.json();
-        label = myJson.parameter[1].valueString
-
-        var my_display_string="";
-
-        // repeating input in the DOM, should mine from returned json
-        for (obj in myJson.parameter) {
-            my_name = myJson.parameter[obj].name
-            if (my_name == 'name') {
-                my_display_string = my_display_string + "Vocab: " + myJson.parameter[obj].valueString + "\n";
-            }
-            if (my_name == 'display') {
-                my_display_string = my_display_string + "Concept name: " + myJson.parameter[obj].valueString + "\n";
-            }
-
-            my_display_string += do_property(myJson)
-            my_display_string += do_designation(myJson)
-
-        }
+    var response;
+    try {
+        response = await fetch(requestString, myHeaders)
+        if (!response.ok) {
+            alert("ERROR status:" + response.status + 
+               ", text: \"" + response.statusText + "\"" +
+               "\n\nCheck the code and selected vocabulary.  Most likely the code \"" + theCode + 
+               "\"  wasn't found in the vocabulary \"" + theSystem + "\".");
+        } else {
+            const myJson = await response.json();
+            label = myJson.parameter[1].valueString
     
-        // Assign into DOM
-        document.getElementById('input-system').value = theSystem
-        document.getElementById('input-code').value = theCode
-
-        document.getElementById('output-system').value = theSystem // to-do
-        document.getElementById('output-code').value = theCode // to-do
-        document.getElementById('output-label').value = label
-
-        alert(my_display_string)
+            var my_display_string="";
+    
+            // repeating input in the DOM, should mine from returned json
+            for (obj in myJson.parameter) {
+                my_name = myJson.parameter[obj].name
+                if (my_name == 'name') {
+                    my_display_string = my_display_string + "Vocab: " + myJson.parameter[obj].valueString + "\n";
+                }
+                if (my_name == 'display') {
+                    my_display_string = my_display_string + "Concept name: " + myJson.parameter[obj].valueString + "\n";
+                }
+    
+                my_display_string += do_property(myJson)
+                my_display_string += do_designation(myJson)
+    
+            }
+        
+            // Assign into DOM
+            document.getElementById('input-system').value = theSystem
+            document.getElementById('input-code').value = theCode
+    
+            document.getElementById('output-system').value = theSystem // to-do
+            document.getElementById('output-code').value = theCode // to-do
+            document.getElementById('output-label').value = label
+    
+            alert(my_display_string)
+        }
+    }
+    catch (error)  {
+        alert(error + "\n That server, \"" + theServer + "\" isn't happy. Please try another, or ask for help.");
     }
 
 }
