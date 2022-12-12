@@ -135,22 +135,20 @@ const  getFhir = async( theServer, theSystem, theCode) => {
                "\"  wasn't found in the vocabulary \"" + theSystem + "\".");
         } else {
             const myJson = await response.json();
-            label = myJson.parameter[1].valueString
+            system_value = myJson.parameter[0].valueString
+            label_value = myJson.parameter[1].valueString 
             var my_display_string="";
     
             // repeating input in the DOM, should mine from returned json
             for (obj in myJson.parameter) {
                 my_thing = myJson.parameter[obj]
-
-                my_display_string += "Vocab: " + my_thing.valueString + "\n";
-
-                my_display_string += "Concept name: " + my_thing.valueString + "\n";
+                //alert(JSON.stringify(my_thing))
 
                 // lots of detail here, but not a repeat of the request 
                 //my_display_string += do_property(my_thing)
 
                 // null for a short name, otherwise specify the language 
-                // desig = do_designation(my_thing, "en-MX")
+                // desig = do_designation(my_thing, "es-MX")
                 desig = do_designation(my_thing, null)
                 if (desig != null && desig != "") { 
                     my_desig = desig;
@@ -163,9 +161,9 @@ const  getFhir = async( theServer, theSystem, theCode) => {
             document.getElementById('input-system').value = theSystem
             document.getElementById('input-code').value = theCode
     
-            //document.getElementById('output-system').value = theSystem // to-do
-            //document.getElementById('output-code').value = theCode; // to-do
-            document.getElementById("output-label").value = label;
+            document.getElementById('output-system').value = system_value
+            //document.getElementById('output-code').value = label_value;
+            document.getElementById("output-label").value = label_value;
 
             if (my_desig) {
                 if (my_desig[0]) {
