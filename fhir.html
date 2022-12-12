@@ -19,6 +19,7 @@
                     <option value="http://20.119.216.32:8000/r4">JHU main</option>
                     <option value="http://20.119.216.32:8001/r4">JHU test</option>
                     <option value="http://127.0.0.1:8080/fhir">local 8080</option>
+                    <option value="http://127.0.0.1:80001/fhir">local 8001</option>
                     <option value="http://hl7.org/fhir/sid/icd-10-cm">Tx.Fhir.org</option>
                     <option value="http://purl.obolibrary.org/obo/hp.fhir">hapi.fhir.org</option>
                     <option value="http://purl.obolibrary.org/obo/mondo.owl">loinc.fhir.org</option>
@@ -61,6 +62,7 @@
             <td><label for="code">Code:</label> </td>
             <td><input type="text" id="code" name="code"></td>
             <td><button type="submit" onClick="getFhir( document.getElementById('server').value, document.getElementById('system').value, document.getElementById('code').value)" >Search for Code</button></td>
+            <td><button type="submit" onClick="getFhirDetail( document.getElementById('server').value, document.getElementById('system').value, document.getElementById('code').value)" >Search, with detailed output </button></td>
         </tr>
         <tr>
             <td> &nbsp &nbsp &nbsp &nbsp </td>
