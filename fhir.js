@@ -20,93 +20,104 @@ query_loaded_codesystems = async(theServer) => {
 
 }
 
-do_property = function(myJson) {
-        var my_display_string="";
-            if (my_name == 'property') {
-                //alert(JSON.stringify(myJson.parameter[obj]))
-                // name:code, valueCode:CLASSTYPE, name:value, valueString:2
-                // name:code, valueCode:VersionLastChanged, name:value, valueString:2.65
-                // name:code, valueCode:STATUS, name:value, valueString:TRIAL
-                // name:code, valueCode:VersionFirstReleased, name:value, valueString:2.38
-                // name:code, valueCode:parent
-                // name:code, valueCode:answer-list
-                // name:code, valueCode:COMPONENT
-                // name:code, valueCode:PROPERTY
-                // name:code, valueCode:TIME_ASPCT
-                // name:code, valueCode:SYSTEM
-                // name:code, valueCode:SCALE_TYP
-                // name:code, valueCode:METHOD_TYP
-                // name:code, valueCode:analyte
-                // name:code, valueCode:time-core
-                // name:code, valueCode:super-system
-                // name:code, valueCode:analyte-core
-                // name:code, valueCode:category
-                // {"name":"property",
-                //  "part":[
-                //      {"name":"code","valueCode":"CLASS"},
-                //      {"name":"value","valueCoding":{
-                //                      "system":"http://loinc.org", "code":"LP95321-3", "display":"PHENX"} 
-                //      } 
-                //  ] 
-                // }
-                for (my_part_idx in  myJson.parameter[obj].part) {
-                    my_part = myJson.parameter[obj].part[my_part_idx]
-                    if (my_part.name == 'value') {
-                        my_display_string = my_display_string 
-                            + "System:" + my_part.valueCoding.system 
-                            + "\nCode: " + my_part.valueCoding.code  
-                            + "\nDisplay:" + my_part.valueCoding .display
-                            + "\n";
-                    }
-                    if (my_part.name == 'code' && my_part.valueCode != 'CLASS') {
-                        break;
-                    }
-                    else if (my_part.name == 'code' && my_part.valueCode == 'CLASS') {
-                        //alert("CLASS  " + JSON.stringify(my_part))
-                    }
-                }
+do_property = function(my_thing) {
+    var my_display_string="";
+    if (my_thing.name == 'property') {
+        // name:code, valueCode: VVVV, (name:value, valueString:XXX)
+        // VVVV one of :
+        //   CLASSTYPE, VersionLastChanged, STATUS, VersionFirstReleased, 
+        //   parent, answer-list, COMPONENT, PROPERTY, TIME_ASPCT, SYSTEM,
+        //   SCALE_TYP, METHOD_TYP, analyte, time-core, super-system,
+        //   analyte-core
+        // name:code, valueCode:category
+        // {"name":"property",
+        //  "part":[
+        //      {"name":"code","valueCode":"CLASS"},
+        //      {"name":"value","valueCoding":{
+        //                      "system":"http://loinc.org", "code":"LP95321-3", "display":"PHENX"} 
+        //      } 
+        //  ] 
+        // }
+        for (my_part_idx in  my_thing.part) {
+            my_part = my_thing.part[my_part_idx]
+            // skip anything that is not what we're looking for
+            if (my_part.name == '\ncode' && my_part.valueCode != 'CLASS') {
+                break;
             }
+            else {
+                my_display_string += "code CLASS: " + JSON.stringify(my_part)
+            }
+            if (my_part.name == 'value') {
+                //my_display_string += "\nvalue...: " + JSON.stringify(my_part)
+            }
+            //if (my_part.name == 'value') {
+            //    my_display_string = my_display_string 
+            //        + "System:" + my_part.valueCoding.system 
+            //        + "\nCode: " + my_part.valueCoding.code  
+            //        + "\nDisplay:" + my_part.valueCoding .display
+            //        + "\n";
+            // }
+            //else if (my_part.name == 'code' && my_part.valueCode == 'CLASS') {
+            //    //alert("CLASS  " + JSON.stringify(my_part))
+            //}
+        }
+    }
     return(my_display_string);
 }
 
-do_designation = function(myJson) {
-        var my_display_string="";
-            if (my_name == 'designation') {
-               my_display_string = my_display_string + "SYNONYM: " 
-               my_part = myJson.parameter[obj].part
-               for (desig_index in my_part) {
-                 designation_part = my_part[desig_index];
-                 if (designation_part.name == 'name') {
-                   my_display_string = my_display_string + " name: " + designation_part.valueString + "\n";
-                 }
-                 else if (designation_part.name == 'language') {
-                    if (designation_part.valueCode != null | designation_part.valueCode == 'undefined') { 
-                        my_display_string = my_display_string + " Language: " + designation_part.valueCode + "\n ";
-                    }
-                    //else { my_display_string = my_display_string + "--- " }
-                 } 
-                 else if (designation_part.name == 'value') {
-                   my_display_string = my_display_string + " "  + designation_part.valueString + "\n";
-                 } 
-                 else if (designation_part.name == 'use') {
-                   my_display_string = my_display_string +  designation_part.valueCoding.display + ": ";
-                 } 
-                 else {
-                   my_display_string = my_display_string + " XX value: " + JSON.stringify(designation_part) + "\n";
-                 } 
-               }
-               my_display_string = my_display_string + "\n"
-              // for (key in Object.keys(myJson.parameter) ) {
+do_designation = function(my_thing, ) {
+    return do_designation(my_thing, null)
+}
+
+do_designation = function(my_thing, desired_lang ) {
+    desig_parts = null;
+    if (my_thing.name == 'designation') {
+        my_part = my_thing.part
+        my_lang = false;
+        my_use = "n/a";
+        my_value = "n/a";
+        // first check to see if this designation has the language value of interest.
+        for (desig_index in my_part) {
+            designation_part = my_part[desig_index];
+            if (designation_part.name == 'language' & designation_part.valueCode == desired_lang) {
+                my_lang = true;
+                if (designation_part.valueCode != null) {
+                   //" Language: " + designation_part.valueCode;
+                }
+            } 
+        }
+
+        // then print the detail 
+        if (my_lang) {
+            for (desig_index in my_part) {
+                designation_part = my_part[desig_index];
+                if (designation_part.name == 'name'){
+                    // " name: " + designation_part.valueString + "\n";
+                }
+                else if (designation_part.name == 'value') {
+                    my_value = designation_part.valueString + "\n";
+                } 
+                else if (designation_part.name == 'use'){
+                    my_use =  designation_part.valueCoding.display + ": ";
+                } 
             }
-    return(my_display_string);
+            desig_parts = [my_use, my_value]
+        }
+    }
+    return(desig_parts);
 }
 
 
 const  getFhir = async( theServer, theSystem, theCode) => {
 
+    document.getElementById('input-system').value = ""
+    document.getElementById('input-code').value = ""
+
     document.getElementById('output-system').value = ""
     document.getElementById('output-code').value =  ""
     document.getElementById('output-label').value =  ""
+    document.getElementById("output-synonym-heading").value = "";
+    document.getElementById("output-synonym-value").value = "";
 
     const base_str = theServer + "/CodeSystem/$lookup?"  // why the /$?
     const system_str = "system=" + theSystem
@@ -116,6 +127,7 @@ const  getFhir = async( theServer, theSystem, theCode) => {
     var response;
     try {
         response = await fetch(requestString, myHeaders)
+        my_desig = []
         if (!response.ok) {
             alert("ERROR status:" + response.status + 
                ", text: \"" + response.statusText + "\"" +
@@ -124,21 +136,26 @@ const  getFhir = async( theServer, theSystem, theCode) => {
         } else {
             const myJson = await response.json();
             label = myJson.parameter[1].valueString
-    
             var my_display_string="";
     
             // repeating input in the DOM, should mine from returned json
             for (obj in myJson.parameter) {
-                my_name = myJson.parameter[obj].name
-                if (my_name == 'name') {
-                    my_display_string = my_display_string + "Vocab: " + myJson.parameter[obj].valueString + "\n";
+                my_thing = myJson.parameter[obj]
+
+                my_display_string += "Vocab: " + my_thing.valueString + "\n";
+
+                my_display_string += "Concept name: " + my_thing.valueString + "\n";
+
+                // lots of detail here, but not a repeat of the request 
+                //my_display_string += do_property(my_thing)
+
+                // null for a short name, otherwise specify the language 
+                // desig = do_designation(my_thing, "en-MX")
+                desig = do_designation(my_thing, null)
+                if (desig != null && desig != "") { 
+                    my_desig = desig;
+                    my_display_string += desig;
                 }
-                if (my_name == 'display') {
-                    my_display_string = my_display_string + "Concept name: " + myJson.parameter[obj].valueString + "\n";
-                }
-    
-                my_display_string += do_property(myJson)
-                my_display_string += do_designation(myJson)
     
             }
         
@@ -146,11 +163,21 @@ const  getFhir = async( theServer, theSystem, theCode) => {
             document.getElementById('input-system').value = theSystem
             document.getElementById('input-code').value = theCode
     
-            document.getElementById('output-system').value = theSystem // to-do
-            document.getElementById('output-code').value = theCode // to-do
-            document.getElementById('output-label').value = label
+            //document.getElementById('output-system').value = theSystem // to-do
+            //document.getElementById('output-code').value = theCode; // to-do
+            document.getElementById("output-label").value = label;
+
+            if (my_desig) {
+                if (my_desig[0]) {
+                    document.getElementById("output-synonym-heading").value = my_desig[0];
+                }
+                if (my_desig[1]) {
+                    document.getElementById("output-synonym-value").value = my_desig[1];
+                }
+            }
+            //document.getElementById('output-definition').value = label
     
-            alert(my_display_string)
+            //alert(my_display_string)
         }
     }
     catch (error)  {
