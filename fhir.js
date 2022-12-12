@@ -107,6 +107,45 @@ do_designation = function(my_thing, desired_lang ) {
     return(desig_parts);
 }
 
+const  getFhirDetail = async( theServer, theSystem, theCode) => {
+
+    document.getElementById('input-system').value = ""
+    document.getElementById('input-code').value = ""
+
+    document.getElementById('output-system').value = ""
+    document.getElementById('output-code').value =  ""
+    document.getElementById('output-label').value =  ""
+    document.getElementById("output-synonym-heading").value = "";
+    document.getElementById("output-synonym-value").value = "";
+
+    const base_str = theServer + "/CodeSystem/$lookup?"  // why the /$?
+    const system_str = "system=" + theSystem
+    const code_str = "&code=" + theCode
+    const requestString = base_str + system_str + code_str
+
+    var response;
+    try {
+        response = await fetch(requestString, myHeaders)
+        my_desig = []
+        if (!response.ok) {
+            alert("ERROR status:" + response.status + 
+               ", text: \"" + response.statusText + "\"" +
+               "\n\nCheck the code and selected vocabulary.  Most likely the code \"" + theCode + 
+               "\"  wasn't found in the vocabulary \"" + theSystem + "\".");
+        } else {
+            const myJson = await response.json();
+    
+            //alert(JSON.stringify(myJson))
+            var newWin = window.open()
+            newWin.document.write(JSON.stringify(myJson))
+            newWin.document.close()
+        }
+    }
+    catch (error)  {
+        alert(error + "\n That server, \"" + theServer + "\" isn't happy. Please try another, or ask for help.");
+    }
+}
+
 
 const  getFhir = async( theServer, theSystem, theCode) => {
 
@@ -181,5 +220,5 @@ const  getFhir = async( theServer, theSystem, theCode) => {
     catch (error)  {
         alert(error + "\n That server, \"" + theServer + "\" isn't happy. Please try another, or ask for help.");
     }
-
 }
+
