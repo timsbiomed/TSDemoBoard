@@ -10,15 +10,93 @@ not_implemented = function(x) {
     alert(x + " is not implemented")
 }
 
+
+parse_code_systems = function(json) {
+    string_rep = "" 
+    
+    for (obj in json.entry) {
+        thing = json.entry[obj]
+        
+        string_rep +=  "<p>" + 
+          "id: " + thing.resource.id + "<br>" +
+          "url: " + thing.resource.url + "<br>" +
+          "name: " + thing.resource.name + "<br>" +
+          "title: " + thing.resource.title  + "<br>" +
+          //"code:" + thing.entry[0].resource.meta.tag[0].code
+          //"versionId:" + JSON.stringify(thing.resource.meta.versionId) + "<br>" + 
+          //"system:" + JSON.stringify(thing.resource.meta.tag[0].system) + "<br>" +
+          "code:" + JSON.stringify(thing.resource.meta.tag[0].code)
+        string_rep += "</p>"
+        
+        //string_rep += JSON.stringify(thing)
+    }
+    
+    return(string_rep)
+}
+
 query_loaded_codesystems = async(theServer) => {
     // http://20.119.216.32:8001/r4/CodeSystem?_summary=true
     const request_string = theServer + "/CodeSystem?_summary=true" 
     alert(request_string)
     const response = await fetch(request_string, myHeaders)
     const myJson = await response.json();
-    alert(JSON.stringify(myJson))
 
+    //alert(JSON.stringify(myJson))
+    //var newWin = window.open()
+    //newWin.document.write(JSON.stringify(myJson))
+    //newWin.document.close()
+
+    var newWin = window.open()
+    newWin.document.write(theServer + "<br>" + parse_code_systems(myJson))
+    newWin.document.close()
 }
+/*******
+bundle.entry[i].fullUrl
+bundle.entry[i].resource.id
+bundle.entry[i].resource.meta.versionId
+bundle.entry[i].resource.meta.tag[0].code
+bundle.entry[i].resource.url
+bundle.entry[i].resource.version
+bundle.entry[i].resource.name
+bundle.entry[i].resource.title
+bundle.entry[i].resource.date
+bundle.entry[i].resource.publisher
+
+{ "resourceType":"Bundle",
+  "id":"7b424fa5-f1dd-4be4-999b-fd872d8b091c",
+  "meta":{"lastUpdated":"2022-12-12T16:27:45.388-07:00",
+          "tag":[{"system":"http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+                  "code":"SUBSETTED",
+                  "display":"Resource encoded in summary mode"}]
+         },
+   "type":"searchset",
+   "link":[{"relation":"self","url":"http://127.0.0.1:8001/fhir/CodeSystem?_summary=true"},
+           {"relation":"next","url":"http://127.0.0.1:8001/fhir?_getpages=7b424fa5-f1dd-4be4-999b-fd872d8b091c&_getpagesoffset=20&_count=20&_pretty=true&_bundletype=searchset"}],
+   "entry":[{ "fullUrl":"http://127.0.0.1:8001/fhir/CodeSystem/ADAAreaOralCavitySystem",
+              "resource":{"resourceType":"CodeSystem",
+                          "id":"ADAAreaOralCavitySystem",
+                          "meta":{"versionId":"1",
+                                  "lastUpdated":"2022-11-21T16:18:20.284-07:00",
+                                  "tag":[{"system":"http://terminology.hl7.org/CodeSystem/v3-ObservationValue",
+                                          "code":"SUBSETTED",
+                                          "display":"Resource encoded in summary mode"}]
+                          },
+                          "url":"http://terminology.hl7.org/CodeSystem/ADAAreaOralCavitySystem",
+                          "version":"1.0.0",
+                          "name":"ADAAreaOralCavitySystem",
+                          "title":"American Dental Association Area of Oral Cavity System",
+                          "status":"active",
+                          "experimental":false,
+                          "date":"2022-04-07T00:00:00-00:00",
+                          "publisher":"American Dental Association",
+                          "contact":[{"name":"American Dental Association; 211 East Chicago Avenue Chicago, IL 60610-2678"}],
+                          "caseSensitive":true,
+                          "content":"not-present"
+              },
+              "search":{"mode":"match"}
+            },
+}
+****/
 
 do_property = function(my_thing) {
     var my_display_string="";
