@@ -38,17 +38,24 @@ query_loaded_codesystems = async(theServer) => {
     // http://20.119.216.32:8001/r4/CodeSystem?_summary=true
     const request_string = theServer + "/CodeSystem?_summary=true" 
     alert(request_string)
-    const response = await fetch(request_string, myHeaders)
-    const myJson = await response.json();
 
-    //alert(JSON.stringify(myJson))
-    //var newWin = window.open()
-    //newWin.document.write(JSON.stringify(myJson))
-    //newWin.document.close()
-
-    var newWin = window.open()
-    newWin.document.write(theServer + "<br>" + parse_code_systems(myJson))
-    newWin.document.close()
+    try {
+        const response = await fetch(request_string, myHeaders)
+        if (!response.ok) {
+            alert("ERROR status:" + response.status + 
+               ", text: \"" + response.statusText + "\"" +
+               "\n\nCheck the code and selected vocabulary.  Most likely the code \"" + theCode + 
+               "\"  wasn't found in the vocabulary \"" + theSystem + "\".");
+        } else {
+            const myJson = await response.json();
+            var newWin = window.open()
+            newWin.document.write(theServer + "<br>" + parse_code_systems(myJson))
+            newWin.document.close()
+        }
+    }
+    catch (error)  {
+        alert(error + "\n That server, \"" + theServer + "\" isn't happy. Please try another, or ask for help.");
+    }
 }
 /*******
 bundle.entry[i].fullUrl
