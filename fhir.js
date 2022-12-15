@@ -10,6 +10,13 @@ not_implemented = function(x) {
     alert(x + " is not implemented")
 }
 
+const clearDisplay = function()  {
+    document.getElementById('input-system').value = ""
+    document.getElementById('input-code').value = ""
+    document.getElementById('output-system').value = ""
+    document.getElementById("output-synonym-heading").value = "";
+    document.getElementById("output-synonym-value").value = "";
+}
 
 parse_code_systems = function(json) {
     string_rep = "" 
@@ -194,14 +201,7 @@ do_designation = function(my_thing, desired_lang ) {
 
 const  getFhirDetail = async( theServer, theSystem, theCode) => {
 
-    document.getElementById('input-system').value = ""
-    document.getElementById('input-code').value = ""
-
-    document.getElementById('output-system').value = ""
-    document.getElementById('output-code').value =  ""
-    document.getElementById('output-label').value =  ""
-    document.getElementById("output-synonym-heading").value = "";
-    document.getElementById("output-synonym-value").value = "";
+    clearDisplay();
 
     const base_str = theServer + "/CodeSystem/$lookup?"  // why the /$?
     const system_str = "system=" + theSystem
@@ -232,16 +232,11 @@ const  getFhirDetail = async( theServer, theSystem, theCode) => {
 }
 
 
+
 const  getFhir = async( theServer, theSystem, theCode) => {
 
-    document.getElementById('input-system').value = ""
-    document.getElementById('input-code').value = ""
 
-    document.getElementById('output-system').value = ""
-    document.getElementById('output-code').value =  ""
-    document.getElementById('output-label').value =  ""
-    document.getElementById("output-synonym-heading").value = "";
-    document.getElementById("output-synonym-value").value = "";
+    clearDisplay();
 
     const base_str = theServer + "/CodeSystem/$lookup?"  // why the /$?
     const system_str = "system=" + theSystem
@@ -286,7 +281,6 @@ const  getFhir = async( theServer, theSystem, theCode) => {
             document.getElementById('input-code').value = theCode
     
             document.getElementById('output-system').value = system_value
-            //document.getElementById('output-code').value = label_value;
             document.getElementById("output-label").value = label_value;
 
             if (my_desig) {
@@ -297,9 +291,13 @@ const  getFhir = async( theServer, theSystem, theCode) => {
                     document.getElementById("output-synonym-value").value = my_desig[1];
                 }
             }
-            //document.getElementById('output-definition').value = label
+       
+            // Definition: Q: where does this go in FHIR? a property? 
+            if (false) {
+                document.getElementById('output-definition-label').value = "Definition";
+                document.getElementById('output-definition-value').value = label
+            }
     
-            //alert(my_display_string)
         }
     }
     catch (error)  {
