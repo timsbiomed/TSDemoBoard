@@ -10,16 +10,18 @@
     </head>
 
     <body>
-    <h1>Query a FHIR Server for Terminology</h1>
+    <center><h1>Query a FHIR Terminology Server  </h1></center>
+    <p>Enter a system and code, receive names or labels, and a definition if available.
+    </p>
     <table>
         <tr>
-            <td><label for="server">For any operation, choose a Server:</label></td>
+            <td colspan=2><em>Choose a Server.</em></td>
+            <td><label for="server">Server:</label></td>
             <td>
                 <select name="server" id="server">
                     <option value="http://20.119.216.32:8000/r4">TIMS main</option>
                     <option value="http://20.119.216.32:8001/r4">TIMS test</option>
                     <option value="http://127.0.0.1:8080/fhir">local 8080</option>
-                    <option value="http://127.0.0.1:8001/fhir">local 8001</option>
                     <option value="http://hl7.org/fhir/sid/icd-10-cm">Tx.Fhir.org</option>
                     <option value="http://purl.obolibrary.org/obo/hp.fhir">hapi.fhir.org</option>
                     <option value="http://purl.obolibrary.org/obo/mondo.owl">loinc.fhir.org</option>
@@ -27,58 +29,32 @@
                 </select> 
             </td>
         </tr>
-    </table>
-    &nbsp
-    <h2>Query Loaded CodeSystems</h2> 
-    <table>
         <tr>
-            <td> &nbsp &nbsp &nbsp &nbsp </td>
-            <td><button type="submit" onClick="query_loaded_codesystems(document.getElementById('server').value)">Show Loaded CodeSystems</button></td>
-        </tr>
-        <tr>
-            <td colspan=2><output type="text" id="output-codesystem" name="output-codesystem"> </td>
-        </tr>
-    </table>
-        &nbsp
-
-    <h2>Query FHIR Concepts</h2> 
-
-    <table>
-        <tr>
-            <td colspan=3><em>Choose a CodeSystem, ontology or vocabulary:</em> </td>
+            <td colspan=2><em>Choose a CodeSystem.</em> </td>
             <td><label for="system">Sytem:</label></td>
             <td><select name="system" id="system">
-            <option value="http://loinc.org">LOINC</option>
-            <option value="http://snomed.info/sct">SNOMED</option>
-            <option value="http://hl7.org/fhir/sid/icd-10-cm">ICD-10 CM</option>
-            <option value="http://purl.obolibrary.org/obo/hp.fhir">HP</option>
-            <option value="http://purl.obolibrary.org/obo/mondo.owl">MONDO</option>
-            <option value="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">CPT4</option>
+              <option value="http://loinc.org">LOINC</option>
+              <option value="http://snomed.info/sct">SNOMED</option>
+              <option value="http://hl7.org/fhir/sid/icd-10-cm">ICD-10 CM</option>
+              <option value="http://purl.obolibrary.org/obo/hp.fhir">HP</option>
+              <option value="http://purl.obolibrary.org/obo/mondo.owl">MONDO</option>
+              <option value="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">CPT4</option>
             </select> </td>
         </tr>
         <tr>
-            <td> &nbsp &nbsp &nbsp &nbsp </td>
-            <td colspan=2><em>Either specify a code to lookup:</em> </td>
-            <td><label for="code">Code:</label> </td>
+            <td colspan=2><em>Specify a code to lookup. &nbsp; &nbsp; &nbsp; &nbsp;  </em> </td>
+            <td><label for="code">Code:</label></td>
             <td><input type="text" id="code" name="code"></td>
+        </tr>
+        <tr>
+            <td colspan=3><em>Click to search.</em> </td>
             <td><button type="submit" onClick="getFhir( document.getElementById('server').value, document.getElementById('system').value, document.getElementById('code').value)" >Search for Code</button></td>
             <td><button type="submit" onClick="getFhirDetail( document.getElementById('server').value, document.getElementById('system').value, document.getElementById('code').value)" >Search, with detailed output </button></td>
         </tr>
-        <tr>
-            <td> &nbsp &nbsp &nbsp &nbsp </td>
-            <td colspan=2><em>Or specify some text  to lookup:</em> </td>
-            <td><label for="text">Text:</label></td>
-            <td><input type="text" id="text" name="text"> </td>
-            <td><button type="submit" onClick="not_implemented('text search')">Search for Text</button></td>
-        </tr>
-        <tr><td></td><td colspan=5>LOINC 66678-4, LOINC LA6668-3, MONDO_0000001, CHEBI_10545, CHEBI_36338</td></tr>
-        <tr><td></td><td colspan=5>Sample codes for MONDO: MONDO_0000001, CHEBI_10545, CHEBI_36338</td></tr>
-        <tr><td></td><td colspan=5>Sample codes for SNOMED: 84114007, 703272007, 703275009</td></tr>
     </table>
 &nbsp
     <table>
         <tr><td colspan=5><em>Query:</em></td></tr>
-        <tr>
             <td>&nbsp &nbsp &nbsp &nbsp</td>
             <td>System:</td><td><output type="text" id="input-system" name="input-system"></td>
             <td>Code:</td><td><output type="text" id="input-code" name="input-code"> </td>
@@ -93,12 +69,28 @@
             <td>&nbsp &nbsp &nbsp &nbsp</td>
            <td>Label:</td><td><output type="text" id="output-label" name="output-label"></td> 
         </tr>
+        <tr>
+            <td>&nbsp &nbsp &nbsp &nbsp</td>
            <td><output type="text" id="output-synonym-heading" name="output-synonym"></td>
            <td><output type="text" id="output-synonym-value" name="output-synonym"></td>
+        </tr>
         <tr>
             <td>&nbsp &nbsp &nbsp &nbsp</td>
            <td>Definition:</td><td><output type="text" id="output-definition" name="output-definition"> </td>
         </tr>
+        <tr>
+            <td>&nbsp &nbsp &nbsp &nbsp</td>
+        </tr>
+        <tr><td colspan=5>Sample codes for LOINC: 66678-4, LA6668-3</td></tr>
+<!--        <tr><td colspan=5>Sample codes for MONDO: MONDO_0000001, CHEBI_10545, CHEBI_36338</td></tr> -->
+        <tr><td colspan=5>Sample codes for SNOMED: 84114007, 703272007, 703275009</td></tr>
+        <tr>
+            <td>&nbsp &nbsp &nbsp &nbsp</td>
+        </tr>
     </table>
+    <p>
+    Many servers linked here use <a href="https://hapifhir.io/">HAPI-FHIR</a>,
+    licensed under the <a href="https://hapifhir.io/hapi-fhir/license.html">Apache Software License 2.0.</a>
+    </p>
 </body>
 </html>
