@@ -13,6 +13,7 @@ not_implemented = function(x) {
 const clearDisplay = function()  {
     document.getElementById('input-system').value = ""
     document.getElementById('input-code').value = ""
+    document.getElementById('output-label').value = ""
     document.getElementById('output-system').value = ""
     document.getElementById("output-synonym-heading").value = "";
     document.getElementById("output-synonym-value").value = "";
