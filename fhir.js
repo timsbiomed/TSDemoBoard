@@ -43,7 +43,7 @@ parse_code_systems = function(json) {
 }
 
 query_loaded_codesystems = async(theServer) => {
-    // http://20.119.216.32:8001/r4/CodeSystem?_summary=true
+    // http://20.119.216.32:8001/fhir/CodeSystem?_summary=true
     const request_string = theServer + "/CodeSystem?_summary=true" 
     alert(request_string)
 
