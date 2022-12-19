@@ -234,6 +234,17 @@ const  getFhirDetail = async( theServer, theSystem, theCode) => {
 
 
 
+find_parameter_by_name = function(params, name) {
+    var label_value = '';
+    for (p in params) {
+        if (params[p].name == name) {
+            return(params[p].valueString);
+        }
+    }
+    return("(not found)");
+}
+
+
 const  getFhir = async( theServer, theSystem, theCode) => {
 
 
@@ -256,9 +267,9 @@ const  getFhir = async( theServer, theSystem, theCode) => {
         } else {
             const myJson = await response.json();
             system_value = myJson.parameter[0].valueString
-            label_value = myJson.parameter[1].valueString 
+            var label_value = find_parameter_by_name(myJson.parameter, 'display');
+
             var my_display_string="";
-    
             // repeating input in the DOM, should mine from returned json
             for (obj in myJson.parameter) {
                 my_thing = myJson.parameter[obj]
