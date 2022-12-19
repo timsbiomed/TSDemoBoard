@@ -43,9 +43,7 @@ parse_code_systems = function(json) {
 }
 
 query_loaded_codesystems = async(theServer) => {
-    // http://20.119.216.32:8001/fhir/CodeSystem?_summary=true
     const request_string = theServer + "/CodeSystem?_summary=true" 
-    alert(request_string)
 
     try {
         const response = await fetch(request_string, myHeaders)
@@ -221,7 +219,6 @@ const  getFhirDetail = async( theServer, theSystem, theCode) => {
         } else {
             const myJson = await response.json();
     
-            //alert(JSON.stringify(myJson))
             var newWin = window.open()
             newWin.document.write(JSON.stringify(myJson))
             newWin.document.close()
@@ -273,7 +270,6 @@ const  getFhir = async( theServer, theSystem, theCode) => {
             // repeating input in the DOM, should mine from returned json
             for (obj in myJson.parameter) {
                 my_thing = myJson.parameter[obj]
-                //alert(JSON.stringify(my_thing))
 
                 // lots of detail here, but not a repeat of the request 
                 //my_display_string += do_property(my_thing)
