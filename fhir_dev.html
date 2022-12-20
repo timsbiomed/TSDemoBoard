@@ -21,15 +21,21 @@
             <td colspan=1><label for="server">Choose a Server:</label></td>
             <td>
                 <select name="server" id="server">
+                    <!--
                     <option value="http://20.119.216.32:8000/r4">TIMS main</option>
-                    <option value="http://20.119.216.32:8001/fhir">TIMS Chris</option>
+                    <option value="http://20.119.216.32:8080/r4">TIMS 8080/r4</option>
                     <option value="http://20.119.216.32:8888/fhir">TIMS Shahim</option>
+                    -->
+
+                    <option value="http://20.119.216.32:8080/fhir">TIMS 8080/fhir</option>
+                    <option value="http://20.119.216.32:8001/fhir">TIMS Chris</option>
+
+
                     <option value="http://127.0.0.1:8080/fhir">local 8080</option>
                     <option value="http://127.0.0.1:8001/fhir">local 8001</option>
-                    <option value="http://hl7.org/fhir/sid/icd-10-cm">Tx.Fhir.org</option>
-                    <option value="http://purl.obolibrary.org/obo/hp.fhir">hapi.fhir.org</option>
-                    <option value="http://purl.obolibrary.org/obo/mondo.owl">loinc.fhir.org</option>
-                    <option value="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">RxNorm server</option>
+                    <option value="http://tx.fhir.org">Tx.Fhir.org</option>
+                    <option value="http://hapi.fhir.org">hapi.fhir.org</option>
+                    <option value="http://loinc.fhir.org">loinc.fhir.org</option>
                 </select> 
             </td>
         </tr>
@@ -45,6 +51,7 @@
               <option value="http://purl.obolibrary.org/obo/mondo.fhir">MONDO</option>
               <option value="http://purl.obolibrary.org/obo/so.fhir">SO</option>
               <option value="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">CPT4</option>
+              <option value="http://purl.bioontology.org/ontology/RXNORM">RxNorm</option>
             </select> </td>
         </tr>
         <tr>
