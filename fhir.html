@@ -26,6 +26,8 @@
               <option value="http://purl.obolibrary.org/obo/hp.fhir">HP</option>
               <option value="http://purl.obolibrary.org/obo/mondo.owl">MONDO</option>
               <option value="http://hl7.org/fhir/CodeSystem/CPT4-2021 Release">CPT4</option>
+              <option value="http://purl.bioontology.org/ontology/RXNORM">RxNorm Drugs</option>
+              <option value="http://purl.bioontology.org/ontology/RXNORMI">RxNorm Ingredients</option>
             </select> </td>
         </tr>
         <tr>
@@ -36,7 +38,7 @@
         <tr>
             <td colspan=3><em>Click to search.</em> </td>
             <td><button type="submit" 
-                 onClick="getFhir('http://20.119.216.32:8000/r4', document.getElementById('system').value, document.getElementById('code').value)"
+                 onClick="getFhir('http://20.119.216.32:8001/fhir', document.getElementById('system').value, document.getElementById('code').value)"
                 >Search for Code</button></td>
         </tr>
         <tr>
