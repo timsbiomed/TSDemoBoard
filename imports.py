@@ -18,63 +18,11 @@ PROJECT_DIR = os.path.dirname(__file__)
 CACHE_DIR = os.path.join(PROJECT_DIR, 'cache')
 
 
-class CacheFhir:
-    """ missing an invalidation mechanism, use with caution """
-    
-    @staticmethod
-    def encode_filename_str(x):
-        """ Convert such that can create friendly system filename.
-            The issue here is backwards from what you might expect.
-            
-        """
-        #delim = '*'
-        #return x.replace('/', f'{delim}slash')
-        return x.replace('/', '*slash')
-
-    @staticmethod
-    def decode_filename_str(x):
-        """Convert from friendly system filename"""
-        #return x.replace(f'{delim}slash', '/')
-        return x.replace('*slash', '/')
-
-    def url_and_params_to_filename(url: str, params: Dict) -> str:
-        """Convert to filename"""
-        x = url
-        if params:
-            x += '___params_'
-            for k, v in params.items():
-                x += '__' + k + '_' + v
-        filename = CacheFhir.encode_filename_str(x) + '.json'
-        return filename
-    
-    def cache_write(url: str, params: Dict, response: Dict):
-        """Write to cache"""
-        filename = CacheFhir.url_and_params_to_filename(url, params)
-        if not os.path.exists(CACHE_DIR):
-            os.makedirs(CACHE_DIR)
-        path = os.path.join(CACHE_DIR, filename)
-        with open(path, 'w') as f:
-            json.dump(response, f, indent=4)
-
-    def cache_read(url: str, params: Dict) -> Union[Dict, None]:
-        """Read from cache"""
-        filename = CacheFhir.url_and_params_to_filename(url, params)
-        path = os.path.join(CACHE_DIR, filename)
-        if os.path.exists(path):
-            with open(path, 'r') as f:
-                data: Dict = json.load(f)
-                return data
-        return None
-
-
-
-
 class TimsClient:
     """TIMS Client"""
 
-    def __init__(self, base_url: str, use_cache=False, verbose=False):
+    def __init__(self, base_url: str, verbose=False):
         self.base_url = base_url
-        self.use_cache = use_cache
         self.verbose=verbose
         self.http_client = httpx.Client()
         
@@ -96,14 +44,9 @@ class TimsClient:
         """GET request"""
         url = self.base_url + internal_path
         response_dict = None
-        if self.use_cache:
-            print(" * USING CACHE * ")
-            response_dict = CacheFhir.cache_read(url, in_params)
         if response_dict:    
             return response_dict
         else:
-            if self.use_cache and self.verbose:
-                print("Cache empty for this request, fetching from server")
             if self.verbose:
                 print("GETTING")
             rq = httpx.Request("GET", url, params=in_params, headers=REQUEST_HEADERS)
@@ -118,7 +61,6 @@ class TimsClient:
                 print(x)
             if self.is_response_ok(response):        
                 response_dict: Dict = json.loads(response.text)
-                CacheFhir.cache_write(url, in_params, response_dict)
                 return response_dict
             return None
 
@@ -231,11 +173,10 @@ class TimsClient:
        
 class ResourceValidation:
    
-    def __init__(self, base_url: str, use_cache=False, verbose=False):
+    def __init__(self, base_url: str,  verbose=False):
         self.base_url = base_url
-        self.use_cache = use_cache
         self.verbose=verbose
-        self.tims_client = TimsClient(base_url, use_cache, verbose)
+        self.tims_client = TimsClient(base_url, verbose)
         
     def put_organization(self, file):
         org_file = open(file, "r")
@@ -317,7 +258,7 @@ DEBUG = False
 if __name__ == '__main__':
     if DEBUG:
         BASE_URL = "http://20.119.216.32:8000/r4/"  # TIMS server for 
-        client = TimsClient(base_url=BASE_URL, use_cache=True)
+        client = TimsClient(base_url=BASE_URL)
         # examples:
         client.summarize_code_system_by_name('LOINC')
         client.lookup_code(system='http://loinc.org', code='LA6668-3')
