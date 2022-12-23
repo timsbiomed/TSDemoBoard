@@ -40,6 +40,17 @@ class TimsClient:
                 print(f"error: {response.status_code}")
                 return False
 
+    def do_basic_http_get_request(self, path) :
+        rq = httpx.Request("GET", path, params={}, headers=REQUEST_HEADERS)
+        try:
+            response: Response = self.http_client.send(rq)
+        except Exception as x:
+            print(x)
+        if self.is_response_ok(response):        
+            response_dict: Dict = json.loads(response.text)
+            return response_dict
+        return None
+
     def do_hapi_get_request(self, internal_path: str, in_params: Dict = None) -> Dict:
         """GET request"""
         url = self.base_url + internal_path
@@ -72,7 +83,36 @@ class TimsClient:
         ## if self.is_response_ok(response):        
         response_dict: Dict = json.loads(response.text)
         return response_dict
-   
+ 
+
+
+# FFS don't need to re-write Array.find
+# obj_array.find((obj) => obj[attr_name] == value) FIX TODO
+# wait, that's java script.FML
+
+    def find_obj_by_attr_val(self, obj_array, attr_name, value):
+        for obj in obj_array:
+            if obj[attr_name] == value:
+                return obj
+        return None
+
+    def get_next_link(self, response):
+        possible = self.find_obj_by_attr_val(response['link'], 'relation', 'next')
+        if possible:
+            return possible['url']
+        else:
+            return None
+
+    def loop_over_pages(self, response, fn):
+        fn(response)
+        next_link = self.get_next_link(response)
+        print("=======================================")
+        while next_link:
+            response = self.do_basic_http_get_request(next_link)
+            next_link = self.get_next_link(response)
+            fn(response)
+
+
 
     def summarize_code_systems(self, verbose=False):
         """Summarize code systems"""
