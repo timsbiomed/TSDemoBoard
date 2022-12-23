@@ -44,25 +44,22 @@ class TimsClient:
         """GET request"""
         url = self.base_url + internal_path
         response_dict = None
-        if response_dict:    
+        if self.verbose:
+            print("GETTING")
+        rq = httpx.Request("GET", url, params=in_params, headers=REQUEST_HEADERS)
+        if self.verbose:
+            print(rq.url)
+        response: Response = None
+        try:
+            if self.verbose:
+                print("SENDING")
+            response: Response = self.http_client.send(rq)
+        except Exception as x:
+            print(x)
+        if self.is_response_ok(response):        
+            response_dict: Dict = json.loads(response.text)
             return response_dict
-        else:
-            if self.verbose:
-                print("GETTING")
-            rq = httpx.Request("GET", url, params=in_params, headers=REQUEST_HEADERS)
-            if self.verbose:
-                print(rq.url)
-            response: Response = None
-            try:
-                if self.verbose:
-                    print("SENDING")
-                response: Response = self.http_client.send(rq)
-            except Exception as x:
-                print(x)
-            if self.is_response_ok(response):        
-                response_dict: Dict = json.loads(response.text)
-                return response_dict
-            return None
+        return None
 
     def do_hapi_post_request(self, internal_path, form_data, in_params) -> Dict:
         rq = httpx.Request("POST", self.base_url + internal_path,
